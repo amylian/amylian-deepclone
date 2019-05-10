@@ -1,0 +1,35 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}BSD 3-Clause License
+${licensePrefix}
+${licensePrefix}Copyright (c) ${date?date?string("yyyy")}, Abexto - Helicon Software Development / Amylian Project
+${licensePrefix} 
+${licensePrefix}Redistribution and use in source and binary forms, with or without
+${licensePrefix}modification, are permitted provided that the following conditions are met:
+${licensePrefix}
+${licensePrefix}* Redistributions of source code must retain the above copyright notice, this
+${licensePrefix}  list of conditions and the following disclaimer.
+${licensePrefix}
+${licensePrefix}* Redistributions in binary form must reproduce the above copyright notice,
+${licensePrefix}  this list of conditions and the following disclaimer in the documentation
+${licensePrefix}  and/or other materials provided with the distribution.
+${licensePrefix}
+${licensePrefix}* Neither the name of the copyright holder nor the names of its
+${licensePrefix}  contributors may be used to endorse or promote products derived from
+${licensePrefix}  this software without specific prior written permission.
+${licensePrefix}
+${licensePrefix}THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+${licensePrefix}AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+${licensePrefix}IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+${licensePrefix}DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+${licensePrefix}FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+${licensePrefix}DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+${licensePrefix}SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+${licensePrefix}CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+${licensePrefix}OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+${licensePrefix}OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>
