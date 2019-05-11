@@ -1,0 +1,21 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
+language: php
+
+# list any PHP version you want to test against
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+# cache vendor dirs
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+install:
+  - travis_retry composer self-update && composer --version
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - travis_retry composer install --prefer-dist --no-interaction
+
+script:
+  - phpunit $PHPUNIT_FLAGS
