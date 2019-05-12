@@ -148,8 +148,14 @@ final class HandlerDefinition
      * Instructs the handler to use the given instance
      * @param object|null $instanceToUse
      */
-    public function useInstance(?object $instanceToUse): HandlerDefinition
+    public function useInstance($instanceToUse): HandlerDefinition
     {
+        if ($instanceToUse !== null && !is_object($instanceToUse)) {
+            throw new Exception\InvalidArgumentException(
+                    'Method \'useInstance()\' expects an object as parameter \'\$instanceToUse\', but '.
+                    gettype($instanceToUse).
+                    ' given');
+        }
         $this->do = DeepClone::DO_USE_INSTANCE;
         $this->instance = $instanceToUse;
         return $this;
