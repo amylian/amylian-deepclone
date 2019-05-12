@@ -86,37 +86,37 @@ namespace Amylian\DeepClone;
  * 
  * <b>Declaring what to do</b>
  * 
- * You can either use {@see @DeepCloneHandler} to configure the handler or use one
+ * You can either use {@see @HandlerDefinition} to configure the handler or use one
  * of the magic shortcuts:
  * 
  * <ul>
  *    <li>
- *      <b><code>false</code></b>: Is a shortcut to <code>DeepCloneHandler::does()->useOriginal();</code>. 
+ *      <b><code>false</code></b>: Is a shortcut to <code>HandlerDefinition::does()->useOriginal();</code>. 
  *      In this case the original instance is kept.
  *    </li>
  *    <li>
- *       <b><code>true</code></b>: Is a shortcut to <code>DeepCloneHandler::does()->useDeepClone();</code>
+ *       <b><code>true</code></b>: Is a shortcut to <code>HandlerDefinition::does()->useDeepClone();</code>
  *       Deep Cloning is used for the object. This is the default for most objects.
  *    </li>
  *    <li>
  *       <b><code>object<code>: If a object is passed, this object is used. 
- *       This is a shortcut to <code>DeepCloneHandler::does()->useInstance();</code>
+ *       This is a shortcut to <code>HandlerDefinition::does()->useInstance();</code>
  *    </li>
  *    <li>
  *       <b><code>callable</code></b>: If a callable is given, the callable is called. 
  *       The first argument it has to take is the object to clone and the second 
  *       parameter an instance of {@see \ReflectionObject}. The function MUST
  *       return the instance to use in the cloned object.
- *       This is the shortcut to <code>DeepCloneHandler::does()->useFunction();</code>
+ *       This is the shortcut to <code>HandlerDefinition::does()->useFunction();</code>
  *    </li>
  *    <li>
  *       If you want to use Php's own clone function you can pass the string
- *       'clone', which is a shortcut to <code>DeepCloneHandler::does()->usePhpClone();</code>
+ *       'clone', which is a shortcut to <code>HandlerDefinition::does()->usePhpClone();</code>
  *    </li>
  * </ul>
  * 
  *
- * @author Andreas Prucha, Abexto - Helicon Software Development <andreas.prucha@gmail.com>
+ * @author Andreas Prucha (Abexto - Helicon Software Development) <andreas.prucha@gmail.com>
  */
 class DeepClone
 {
@@ -161,7 +161,7 @@ class DeepClone
     protected $_onInternalObject = self::DO_PHP_CLONE_OR_KEEP;
 
     /**
-     * @var DeepCloneHandler What to do in case of error (Default: Retry with PHP-Clone 
+     * @var HandlerDefinition What to do in case of error (Default: Retry with PHP-Clone 
      */
     protected $_onError = null;
 
@@ -193,16 +193,16 @@ class DeepClone
         $this->onError(static::DO_PHP_CLONE_OR_KEEP);
     }
 
-    protected function preparHandler($do): DeepCloneHandler
+    protected function preparHandler($do): HandlerDefinition
     {
-        if ($do instanceof DeepCloneHandler) {
+        if ($do instanceof HandlerDefinition) {
             if ($do->do) {
                 return $do;
             } else {
                 throw new InvalidConfigurationException('DeepClone Handler is not configured');
             }
         } else {
-            return DeepCloneHandler::does($do);
+            return HandlerDefinition::does($do);
         }
     }
 
@@ -224,9 +224,9 @@ class DeepClone
      * Defines a special handler for a concrete instance
      * 
      * @param object $object The object to handle
-     * @param DeepCloneHandler|object|int {@see DeepCopy}
+     * @param HandlerDefinition|object|int {@see DeepCopy}
      */
-    public function onObject(object $object, $do): DeepClone
+    public function onObject($object, $do): DeepClone
     {
         $oid = spl_object_id($object);
         if ($do !== null) {
@@ -240,7 +240,7 @@ class DeepClone
     /**
      * Defines how to handle internal PHP classes.
      * 
-     * @param DeepCloneHandler|int|true|false|callable|object $do How to handle the object
+     * @param HandlerDefinition|int|true|false|callable|object $do How to handle the object
      * @return \Amylian\DeepClone\DeepClone
      */
     public function onInternalObject($do): DeepClone
@@ -280,7 +280,7 @@ class DeepClone
             // infinite recursion. The reference is just removed in case
             // of an exception
             $oldObjectHandler = $this->getOnObjectHandler($sourceObject);
-            $this->onObject($sourceObject, DeepCloneHandler::does()->useInstance($result));
+            $this->onObject($sourceObject, HandlerDefinition::does()->useInstance($result));
 
             $resultObjectReflection = new \ReflectionObject($result);
 
@@ -316,9 +316,9 @@ class DeepClone
      * Returns the Handler of a object instance
      * 
      * @param object $objectInstance
-     * @return null|\Amylian\DeepClone\DeepCloneHandler A handler if set (or null)
+     * @return null|\Amylian\DeepClone\HandlerDefinition A handler if set (or null)
      */
-    protected function getOnObjectHandler($objectInstance): ?DeepCloneHandler
+    protected function getOnObjectHandler($objectInstance): ?HandlerDefinition
     {
         return $this->_onObject[spl_object_id($objectInstance)] ?? null;
     }
@@ -327,13 +327,13 @@ class DeepClone
      * Redirects to the correct handler 
      * 
      * @param object $sourceObject
-     * @param \Amylian\DeepClone\DeepCloneHandler $handler
+     * @param \Amylian\DeepClone\HandlerDefinition $handler
      * @param \ReflectionObject $sourceObjectReflection
      * @param type $handledException
      * @return object
      * @throws \Amylian\DeepClone\Exception\InvalidConfigurationException
      */
-    protected function doHandlerDepending($sourceObject, DeepCloneHandler $handler, \ReflectionObject $sourceObjectReflection, $handledException = null)
+    protected function doHandlerDepending($sourceObject, HandlerDefinition $handler, \ReflectionObject $sourceObjectReflection, $handledException = null)
     {
         $sourceObjectReflection = $sourceObjectReflection ?? new \ReflectionObject($sourceObject);
         switch ($handler->do) {
@@ -373,7 +373,7 @@ class DeepClone
         }
     }
 
-    protected function cloneObject(object $sourceObject)
+    protected function cloneObject($sourceObject)
     {
         $sourceObjectReflection = new \ReflectionObject($sourceObject);
 
@@ -417,7 +417,7 @@ class DeepClone
             return null;
         } elseif (is_object($thing)) {
             $result = $this->cloneObject($thing);
-            $this->onObject($thing, DeepCloneHandler::does()->useInstance($result));
+            $this->onObject($thing, HandlerDefinition::does()->useInstance($result));
             return $result;
         } elseif (is_array($thing)) {
             return $this->cloneArray($thing);

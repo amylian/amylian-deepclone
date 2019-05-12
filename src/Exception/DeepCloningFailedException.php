@@ -37,7 +37,7 @@ namespace Amylian\DeepClone\Exception;
 /**
  * General Exception on failure
  *
- * @author Andreas Prucha, Abexto - Helicon Software Development <andreas.prucha@gmail.com>
+ * @author Andreas Prucha (Abexto - Helicon Software Development) <andreas.prucha@gmail.com>
  */
 class DeepCloningFailedException extends \Exception implements DeepCloneExceptionInterface
 {

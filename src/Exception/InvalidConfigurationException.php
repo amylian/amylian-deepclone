@@ -37,7 +37,7 @@ namespace Amylian\DeepClone\Exception;
 /**
  * Exception on configuration errors
  *
- * @author Andreas Prucha, Abexto - Helicon Software Development <andreas.prucha@gmail.com>
+ * @author Andreas Prucha (Abexto - Helicon Software Development) <andreas.prucha@gmail.com>
  */
 class InvalidConfigurationException extends \Exception implements DeepCloneExceptionInterface
 {

@@ -36,7 +36,7 @@ namespace Amylian\DeepClone\Exception;
 
 /**
  *
- * @author Andreas Prucha, Abexto - Helicon Software Development <andreas.prucha@gmail.com>
+ * @author Andreas Prucha (Abexto - Helicon Software Development) <andreas.prucha@gmail.com>
  */
 interface DeepCloneExceptionInterface
 {

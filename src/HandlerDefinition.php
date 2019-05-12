@@ -41,14 +41,14 @@ namespace Amylian\DeepClone;
  * use chaining to configure it:
  * 
  * <b>Examples</b>
- * <code>$handler = DeepCloneHandler::does()->useDeepClone()</code>
+ * <code>$handler = HandlerDefinition::does()->useDeepClone()</code>
  * Instructs the handler to use deep cloning in this case
- * <code>$handler = DeepCloneHandler::does()->usePhpClone()</code>
+ * <code>$handler = HandlerDefinition::does()->usePhpClone()</code>
  * Instructs the handler to use deep cloning in this case
  *
- * @author Andreas Prucha, Abexto - Helicon Software Development <andreas.prucha@gmail.com>
+ * @author Andreas Prucha (Abexto - Helicon Software Development) <andreas.prucha@gmail.com>
  */
-final class DeepCloneHandler
+final class HandlerDefinition
 {
 
     /**
@@ -86,13 +86,13 @@ final class DeepCloneHandler
             } else {
                 switch ($do) {
                     case \Amylian\DeepClone\DeepClone::DO_USE_INSTANCE:
-                        throw new InvalidConfigurationException('Cannot configure this way. Pass instance to use or use \'DeepCloneHandler::does()->useInstance($theInstnace)\'');
+                        throw new InvalidConfigurationException('Cannot configure this way. Pass instance to use or use \'HandlerDefinition::does()->useInstance($theInstnace)\'');
                         break;
                     case \Amylian\DeepClone\DeepClone::DO_CALL:
-                        throw new InvalidConfigurationException('Cannot configure this way. Pass callable to use or use \'DeepCloneHandler::does()->useFunction(function(){...})\'');
+                        throw new InvalidConfigurationException('Cannot configure this way. Pass callable to use or use \'HandlerDefinition::does()->useFunction(function(){...})\'');
                         break;
                     case \Amylian\DeepClone\DeepClone::DO_CALL:
-                        throw new InvalidConfigurationException('Cannot configure this way. Pass callable to use or use \'DeepCloneHandler::does()->useFunction(function(){...})\'');
+                        throw new InvalidConfigurationException('Cannot configure this way. Pass callable to use or use \'HandlerDefinition::does()->useFunction(function(){...})\'');
                         break;
                     default:
                         $this->do = $do;
@@ -111,9 +111,9 @@ final class DeepCloneHandler
      * You can either use a shortcut (see {@see DeepClone}}, use use chained
      * calling (which is recommended:
      * 
-     * <code>DeepCloneHandler::does()->useOriginal()</code>: Keep the original instance.
-     * <code>DeepCloneHandler::does()->useDeepClone()</code>: Do deep cloning.
-     * <code>DeepCloneHandler::does()->usePhpClone()</code>: Use PHP clone op.
+     * <code>HandlerDefinition::does()->useOriginal()</code>: Keep the original instance.
+     * <code>HandlerDefinition::does()->useDeepClone()</code>: Do deep cloning.
+     * <code>HandlerDefinition::does()->usePhpClone()</code>: Use PHP clone op.
      * 
      * 
      * @param int|callable|true|false|objectstring A Shortcut
@@ -124,7 +124,7 @@ final class DeepCloneHandler
         return new static($do);
     }
 
-    public function useOriginal(): DeepCloneHandler
+    public function useOriginal(): HandlerDefinition
     {
         $this->do = DeepClone::DO_KEEP;
     }
@@ -132,13 +132,13 @@ final class DeepCloneHandler
     /**
      * Instructs the handler to perform a PHP Clone
      */
-    public function usePhpClone(): DeepCloneHandler
+    public function usePhpClone(): HandlerDefinition
     {
         $this->do = DeepClone::DO_PHP_CLONE_OR_KEEP;
         return $this;
     }
 
-    public function useDeepClone(): DeepCloneHandler
+    public function useDeepClone(): HandlerDefinition
     {
         $this->do = DeepClone::DO_DEEP_CLONE;
         return $this;
@@ -148,7 +148,7 @@ final class DeepCloneHandler
      * Instructs the handler to use the given instance
      * @param object|null $instanceToUse
      */
-    public function useInstance(?object $instanceToUse): DeepCloneHandler
+    public function useInstance(?object $instanceToUse): HandlerDefinition
     {
         $this->do = DeepClone::DO_USE_INSTANCE;
         $this->instance = $instanceToUse;
@@ -166,7 +166,7 @@ final class DeepCloneHandler
      * 
      * @param callable $func
      */
-    public function useFunction($func): DeepCloneHandler
+    public function useFunction($func): HandlerDefinition
     {
         if (is_callable($func)) {
             throw new InvalidArgumentException('useFunction() expects a valid callable as parameter');
@@ -178,9 +178,9 @@ final class DeepCloneHandler
 
     /**
      * Instructs the handler to throw an exception
-     * @return \Amylian\DeepClone\DeepCloneHandler
+     * @return \Amylian\DeepClone\HandlerDefinition
      */
-    public function throwException(): DeepCloneHandler
+    public function throwException(): HandlerDefinition
     {
         $this->do = DeepClone::DO_THOROW_EXCEPTION;
         return $this;
