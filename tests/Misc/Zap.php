@@ -37,7 +37,7 @@ namespace Amylian\DeepClone\Testing\Misc;
 /**
  * Description of Zap
  *
- * @author Andreas Prucha, Abexto - Helicon Software Development <andreas.prucha@gmail.com>
+ * @author Andreas Prucha (Abexto - Helicon Software Development) <andreas.prucha@gmail.com>
  */
 class Zap 
 {

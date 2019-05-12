@@ -37,7 +37,7 @@ namespace Amylian\DeepClone\Testing\Unit;
 /**
  * Description of DeepCloneTest
  *
- * @author Andreas Prucha, Abexto - Helicon Software Development <andreas.prucha@gmail.com>
+ * @author Andreas Prucha (Abexto - Helicon Software Development) <andreas.prucha@gmail.com>
  */
 class DeepCloneTest extends \PHPUnit\Framework\TestCase
 {
@@ -149,6 +149,21 @@ class DeepCloneTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('yes', $arrayCopy['aFinalClassWithPrivateConstructor']->getValue());
         
         
+    }
+    
+    public function testCopyStaticShortcut()
+    {
+        $foo = new \Amylian\DeepClone\Testing\Misc\Foo();
+        $bar = new \Amylian\DeepClone\Testing\Misc\Bar($foo);
+        $foo->setBar($bar);
+        $this->assertSame($foo, $bar->getFoo());
+
+        $barCopy = \Amylian\DeepClone\DeepClone::copy($bar);
+        $this->assertNotSame($bar, $barCopy);
+        $this->assertEquals($bar, $barCopy);
+        $this->assertInstanceOf(\Amylian\DeepClone\Testing\Misc\Bar::class, $barCopy);
+        $this->assertNotSame($foo, $barCopy->getFoo());
+        $this->assertInstanceOf(\Amylian\DeepClone\Testing\Misc\Foo::class, $barCopy->getFoo());
     }
 
 }

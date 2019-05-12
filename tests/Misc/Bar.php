@@ -37,7 +37,7 @@ namespace Amylian\DeepClone\Testing\Misc;
 /**
  * Description of Bar
  *
- * @author Andreas Prucha, Abexto - Helicon Software Development <andreas.prucha@gmail.com>
+ * @author Andreas Prucha (Abexto - Helicon Software Development) <andreas.prucha@gmail.com>
  */
 class Bar
 {
