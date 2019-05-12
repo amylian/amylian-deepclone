@@ -2,7 +2,7 @@
 
 Copyright (c) 2018, [Andreas Prucha (Abexto - Helicon Software Development / Amylian Project)](http://www.abexto.com]) <andreas.prucha@gmail.com>
 
-Deep Cloning Utility
+Utility Class performing deep cloning on object trees
 
 ## Installation
 

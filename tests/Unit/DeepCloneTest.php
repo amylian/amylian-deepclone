@@ -41,7 +41,7 @@ namespace Amylian\DeepClone\Testing\Unit;
  */
 class DeepCloneTest extends \PHPUnit\Framework\TestCase
 {
-    
+
     protected function getPropertyValue($object, $propertyName)
     {
         $objectReflection = new \ReflectionClass($object);
@@ -49,40 +49,60 @@ class DeepCloneTest extends \PHPUnit\Framework\TestCase
         $propertyReflection->setAccessible(true);
         return $propertyReflection->getValue($object);
     }
-    
+
+    public function testWithStdClass()
+    {
+        $x = new \ReflectionObject($this);
+        $barCopy = \Amylian\DeepClone\DeepClone::of($x)
+                ->onError(\Amylian\DeepClone\DeepClone::DO_THOROW_EXCEPTION)
+                ->create();
+        $o = new \stdClass();
+        $o->aProperty = new \StdClass();
+        $o->aProperty->aValue = 'value';
+        $this->assertSame('value', $o->aProperty->aValue);
+        $c = \Amylian\DeepClone\DeepClone::copy($o);
+        $this->assertNotSame($o, $c);
+        $this->assertSame('value', $c->aProperty->aValue);
+        $this->assertEquals($o, $c);
+    }
+
     public function testPropertiesAreCloned()
     {
         $foo = new \Amylian\DeepClone\Testing\Misc\Foo();
         $bar = new \Amylian\DeepClone\Testing\Misc\Bar($foo);
         $foo->setBar($bar);
         $this->assertSame($foo, $bar->getFoo());
-        
-        $barCopy = \Amylian\Utils\DeepClone::of($bar);
+
+        $barCopy = \Amylian\DeepClone\DeepClone::of($bar)
+                ->onError(\Amylian\DeepClone\DeepClone::DO_THOROW_EXCEPTION)
+                ->create();
         $this->assertNotSame($bar, $barCopy);
+        $this->assertEquals($bar, $barCopy);
         $this->assertInstanceOf(\Amylian\DeepClone\Testing\Misc\Bar::class, $barCopy);
         $this->assertNotSame($foo, $barCopy->getFoo());
         $this->assertInstanceOf(\Amylian\DeepClone\Testing\Misc\Foo::class, $barCopy->getFoo());
     }
-    
+
     public function testCrossReferencesGetSameInstance()
     {
         $foo = new \Amylian\DeepClone\Testing\Misc\Foo();
         $bar = new \Amylian\DeepClone\Testing\Misc\Bar($foo);
         $foo->setBar($bar);
         $this->assertSame($foo, $bar->getFoo());
-        
-        $barCopy = \Amylian\Utils\DeepClone::of($bar);
-        
+
+        $barCopy = \Amylian\DeepClone\DeepClone::of($bar)->create();
+
         $this->assertSame($barCopy, $barCopy->getFoo()->getBar());
+        $this->assertEquals($bar, $barCopy);
     }
-    
+
     public function testCloneFinalClassWithPrivateConstructorAndUndefinedProperty()
     {
         $o = \Amylian\DeepClone\Testing\Misc\FinalClassWithPrivateConstructor::create('yes');
-        $cp = \Amylian\Utils\DeepClone::of($o);
+        $cp = \Amylian\DeepClone\DeepClone::of($o)->create();
+        $this->assertEquals($o, $cp);
     }
-    
-    
+
     public function testCloningArrayWithMixedValues()
     {
         $foo1 = new \Amylian\DeepClone\Testing\Misc\Foo();
@@ -100,31 +120,35 @@ class DeepCloneTest extends \PHPUnit\Framework\TestCase
             'aInt' => 666,
             'aString' => 'teststring',
             'secondFoo1' => $foo1,
-            'secondFoo2' => $foo2, 
+            'secondFoo2' => $foo2,
             'aClosure' => function($s) {
-                return $s.'Result';
+                return $s . 'Result';
             },
             'aReflection' => new \ReflectionClass($this),
         ];
-            
+
         $originalArray['aFinalClassWithPrivateConstructor'] = \Amylian\DeepClone\Testing\Misc\FinalClassWithPrivateConstructor::create('yes');
-        
+
         $this->assertSame($originalArray['foo1'], $foo1);
         $this->assertSame($originalArray['foo1'], $originalArray['secondFoo1']);
         $this->assertSame('closureResult', $originalArray['aClosure']('closure'));
         $this->assertTrue(isset($originalArray['aFinalClassWithPrivateConstructor']->value));
         $this->assertSame('yes', $originalArray['aFinalClassWithPrivateConstructor']->getValue());
-        $arrayCopy = \Amylian\Utils\DeepClone::of($originalArray);
+        $arrayCopy = \Amylian\DeepClone\DeepClone::of($originalArray)->create();
+
+        $this->assertNotSame($arrayCopy, $originalArray);
+        $this->assertEquals($arrayCopy, $originalArray);
         
         $this->assertNotSame($arrayCopy['foo1'], $foo1);
         $this->assertSame($arrayCopy['foo1'], $arrayCopy['secondFoo1']);
-        
+
         $this->assertSame(666, $arrayCopy['aInt']);
         $this->assertSame('teststring', $arrayCopy['aString']);
         $this->assertSame('closureResult', $arrayCopy['aClosure']('closure'));
         $this->assertTrue(isset($arrayCopy['aFinalClassWithPrivateConstructor']->value));
         $this->assertSame('yes', $arrayCopy['aFinalClassWithPrivateConstructor']->getValue());
         
+        
     }
-    
+
 }
