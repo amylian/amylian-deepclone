@@ -182,12 +182,19 @@ class DeepClone
      * @var type 
      */
     protected $onObject = [];
+    
+    /**
+     * @var type Use spl_object_id instead of spl_object_hash
+     */
+    protected $useSplObjectId = true;
 
     public function __construct($source)
     {
         $this->source = $source;
 
         // Set default configuration
+        
+        $this->useSplObjectId = function_exists('\spl_object_id');
 
         $this->onInternalObject(static::DO_PHP_CLONE_OR_KEEP);
         $this->onError(static::DO_PHP_CLONE_OR_KEEP);
@@ -204,6 +211,16 @@ class DeepClone
         } else {
             return HandlerDefinition::does($do);
         }
+    }
+    
+    /**
+     * Returns the object ID (or hash in older versions of PHP)
+     * @param object $obj
+     * @return mixed
+     */
+    private function getObjectId($obj)
+    {
+        return $this->useSplObjectId ? spl_object_id($obj) : spl_object_hash($obj);
     }
 
     /**
@@ -223,12 +240,12 @@ class DeepClone
     /**
      * Defines a special handler for a concrete instance
      * 
-     * @param object $object The object to handle
+     * @param object $obj The object to handle
      * @param HandlerDefinition|object|int {@see DeepCopy}
      */
-    public function onObject($object, $do): DeepClone
+    public function onObject($obj, $do): DeepClone
     {
-        $oid = spl_object_id($object);
+        $oid = $this->getObjectId($obj);
         if ($do !== null) {
             $this->_onObject[$oid] = $this->preparHandler($do);
         } else{
@@ -315,12 +332,12 @@ class DeepClone
     /**
      * Returns the Handler of a object instance
      * 
-     * @param object $objectInstance
+     * @param object $objtInstance
      * @return null|\Amylian\DeepClone\HandlerDefinition A handler if set (or null)
      */
-    protected function getOnObjectHandler($objectInstance): ?HandlerDefinition
+    protected function getOnObjectHandler($objtInstance): ?HandlerDefinition
     {
-        return $this->_onObject[spl_object_id($objectInstance)] ?? null;
+        return $this->_onObject[$this->getObjectId($objtInstance)] ?? null;
     }
 
     /**

@@ -62,6 +62,7 @@ class DeepCloneTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('value', $o->aProperty->aValue);
         $c = \Amylian\DeepClone\DeepClone::copy($o);
         $this->assertNotSame($o, $c);
+        $this->assertNotSame(spl_object_hash($o), spl_object_hash($c));
         $this->assertSame('value', $c->aProperty->aValue);
         $this->assertEquals($o, $c);
     }
