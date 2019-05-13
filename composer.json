@@ -1,6 +1,6 @@
 {
   "name": "amylian/deepclone",
-  "description": "Amylian DeepClone",
+  "description": "Provides Deep Cloning (Copying) of objects and arrays",
   "keywords": ["clone", "deepclone", "deepcopy", "objects", "cloning", "deep copy", "deep clone"],
   "type": "library",
   "license": "BSD-3-Clause",
