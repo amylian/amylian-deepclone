@@ -6,6 +6,7 @@ Copyright (c) 2018, [Andreas Prucha (Abexto - Helicon Software Development)](htt
 
 | Version | Travis Result |
 | ------- | ----------------- |
+| V 0.1.0 | ![V 0.1.0 Status](https://api.travis-ci.org/amylian/amylian-deepclone.svg?branch=v0.1.0)
 | Master  | ![Master Status](https://travis-ci.org/amylian/amylian-deepclone.svg?branch=master) |
 
 ## Function Summary
