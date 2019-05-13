@@ -139,7 +139,7 @@ class DeepCloneTest extends \PHPUnit\Framework\TestCase
 
         $this->assertNotSame($arrayCopy, $originalArray);
         $this->assertEquals($arrayCopy, $originalArray);
-        
+
         $this->assertNotSame($arrayCopy['foo1'], $foo1);
         $this->assertSame($arrayCopy['foo1'], $arrayCopy['secondFoo1']);
 
@@ -148,10 +148,8 @@ class DeepCloneTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('closureResult', $arrayCopy['aClosure']('closure'));
         $this->assertTrue(isset($arrayCopy['aFinalClassWithPrivateConstructor']->value));
         $this->assertSame('yes', $arrayCopy['aFinalClassWithPrivateConstructor']->getValue());
-        
-        
     }
-    
+
     public function testCopyStaticShortcut()
     {
         $foo = new \Amylian\DeepClone\Testing\Misc\Foo();
@@ -166,5 +164,34 @@ class DeepCloneTest extends \PHPUnit\Framework\TestCase
         $this->assertNotSame($foo, $barCopy->getFoo());
         $this->assertInstanceOf(\Amylian\DeepClone\Testing\Misc\Foo::class, $barCopy->getFoo());
     }
+
+    public function testExceptionOnInternalObject()
+    {
+        $this->expectException(\ReflectionException::class);
+        $o = new \StdClass();
+        $o->func = function() {
+            return true;
+        };
+        $c = \Amylian\DeepClone\DeepClone::of($o)
+                ->onInternalObject(\Amylian\DeepClone\DeepClone::DO_DEEP_CLONE)
+                ->onError(\Amylian\DeepClone\DeepClone::DO_THOROW_EXCEPTION)
+                ->create();
+        $this->assertNotSame($c, $o);
+    }
+    
+    public function testSameInstanceOfClosure()
+    {
+        $o = new \StdClass();
+        $o->func = function() {
+            return true;
+        };
+        $c = \Amylian\DeepClone\DeepClone::of($o)
+                ->onInternalObject(\Amylian\DeepClone\DeepClone::DO_PHP_CLONE_OR_KEEP)
+                ->onError(\Amylian\DeepClone\DeepClone::DO_THOROW_EXCEPTION)
+                ->create();
+        $this->assertNotSame($c, $o);
+        $this->assertSame($c->func, $o->func);
+    }
+    
 
 }
