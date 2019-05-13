@@ -4,7 +4,7 @@ Copyright (c) 2018, [Andreas Prucha (Abexto - Helicon Software Development)](htt
 
 ## Status
 
-| Version | CI Testing Result |
+| Version | Travis Result |
 | ------- | ----------------- |
 | Master  | ![Master Status](https://travis-ci.org/amylian/amylian-deepclone.svg?branch=master) |
 
