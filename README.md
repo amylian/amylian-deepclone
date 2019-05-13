@@ -2,6 +2,11 @@
 
 Copyright (c) 2018, [Andreas Prucha (Abexto - Helicon Software Development)](http://www.abexto.com]) <andreas.prucha@gmail.com>
 
+## Status
+
+| Version | CI Testing Result |
+| ------- | ----------------- |
+| Master  | ![Master Status](https://travis-ci.org/amylian/amylian-deepclone.svg?branch=master) |
 
 ## Function Summary
 
